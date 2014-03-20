@@ -25,12 +25,14 @@ import org.junit.Test;
 public class GroupTest {
 
     protected SimpleDateFormat formater;
+    protected MailTester mailer;
     protected Group testee;
 
     @Before
     public void setUp() {
         formater = new SimpleDateFormat("dd/MM/yyyy");
-        testee = new Group();
+        mailer = new MailTester();
+        testee = new Group(mailer);
     }
 
     @Test
@@ -94,5 +96,17 @@ public class GroupTest {
         Double expResult = sum / 3;
         Double result = testee.getGroupAverage();
         assertEquals(expResult, result);
+    }
+
+    @Test
+    public void testSendGroupMail() {
+        System.out.println("sendGroupMail");
+
+        testee.addStudent(new Student("Doe", "John", new Date()));
+        testee.addStudent(new Student("Plof", "Bertrand", new Date()));
+        testee.addStudent(new Student("Lavoie", "Sandrine", new Date()));
+
+        testee.sendGroupMail("foo", "bar");
+        assertTrue(mailer.mails.size() == 3);
     }
 }
