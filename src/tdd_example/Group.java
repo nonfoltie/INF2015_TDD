@@ -23,9 +23,11 @@ import java.util.Map;
 public class Group {
 
     protected Map<String, Student> students;
+    protected MailSender mailer;
 
-    public Group() {
+    public Group(MailSender mailer) {
         this.students = new HashMap<>();
+        this.mailer = mailer;
     }
 
     public Collection<Student> getStudents() {
@@ -53,7 +55,6 @@ public class Group {
     }
 
     public void sendGroupMail(String subject, String message) {
-        MailSender mailer = new UQAMMailSender();
         for (Student student : students.values()) {
             mailer.send(student.getPermaCode(), subject, message);
         }
