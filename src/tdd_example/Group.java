@@ -24,6 +24,8 @@ public class Group {
 
     protected Map<String, Student> students;
 
+    MailSender sender = new UQAMMailSender();
+
     public Group() {
         this.students = new HashMap<>();
     }
@@ -50,5 +52,11 @@ public class Group {
             sum += student.getAverageScore();
         }
         return sum / students.size();
+    }
+
+    public void sendGroupEmail(String subject, String message) {
+        for (Student student : students.values()) {
+            sender.send(student.getPermaCode(), subject, message);
+        }
     }
 }

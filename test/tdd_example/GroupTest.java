@@ -95,4 +95,27 @@ public class GroupTest {
         Double result = testee.getGroupAverage();
         assertEquals(expResult, result);
     }
+
+    @Test
+    public void testSendGroupEmail() {
+        System.out.println("testSendGroupEmail");
+        Group testee = new Group();
+
+        MailTester sender = new MailTester();
+        testee.sender = sender;
+
+        Student student1 = new Student("Doe", "John", new Date());
+        Student student2 = new Student("Plof", "Bertrand", new Date());
+        Student student3 = new Student("Lavoie", "Sandrine", new Date());
+        Student student4 = new Student("sdfsfsdf", "sfdfs", new Date());
+        testee.addStudent(student1);
+        testee.addStudent(student2);
+        testee.addStudent(student3);
+        testee.addStudent(student4);
+
+        testee.sendGroupEmail("test object", "test message");
+        assertTrue(sender.sentEmails.size() == 4);
+        assertEquals(sender.sentEmails.get(1).subject, "test object");
+        assertEquals(sender.sentEmails.get(0).message, "test message");
+    }
 }
